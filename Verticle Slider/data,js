@@ -1,0 +1,126 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const listItems = document.querySelectorAll('.service-item');
+  if (listItems.length === 0) return; 
+
+  const cardImage = document.getElementById('card-image');
+  const cardTitle = document.getElementById('card-title');
+  const cardExcerpt = document.getElementById('card-excerpt');
+  const cardLink = document.getElementById('card-link');
+
+  // 1. Expand your data object with the new services
+  const serviceData = {
+   uiux: {
+      title: "UI/UX Design",
+      excerpt: "Crafting intuitive user interfaces that deliver seamless and engaging digital experiences.",
+      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=600&auto=format&fit=crop",
+      link: "/ui-ux-design" 
+    },
+web: {
+      title: "Web Development",
+      excerpt: "Creating responsive web applications designed to maximize visibility and conversion rates.",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=600&auto=format&fit=crop",
+      link: "/digital-systems"
+    },
+seo: {
+      title: "SEO Optimization",
+      excerpt: "Elevate your online visibility with advanced generative engine and search optimization.",
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=600&auto=format&fit=crop",
+      link: "/web-development"
+    },
+    // ADD NEW DATA HERE
+arvr: {
+      title: "AR/VR/XR Development",
+      excerpt: "Building immersive extended reality environments that redefine how users experience digital worlds",
+      image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=600&auto=format&fit=crop",
+      link: "/seo"
+    },
+marketing: {
+      title: "Digital Marketing",
+      excerpt: "Delivering measurable results through integrated digital marketing and strategic online campaigns",
+      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=600&auto=format&fit=crop",
+      link: "/branding"
+    },
+graphic: {
+      title: "Graphic Designing",
+      excerpt: "Designing cohesive visual elements that minimize redundancy and enhance your brand identity.",
+      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=600&auto=format&fit=crop",
+      link: "/branding"
+    },
+game: {
+      title: "Game Development",
+      excerpt: "Developing high-performance interactive worlds designed to engage and challenge global players.",
+      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=600&auto=format&fit=crop",
+      link: "/branding"
+    },
+mobile: {
+      title: "Mobile App Development",
+      excerpt: "Building user-centric mobile solutions that deliver powerful functionality across all devices.",
+      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=600&auto=format&fit=crop",
+      link: "/branding"
+    }
+  };
+
+  // 2. Existing Hover Logic
+  listItems.forEach(function(item) {
+    item.addEventListener('mouseenter', function() {
+      listItems.forEach(function(li) { li.classList.remove('active'); });
+      this.classList.add('active');
+
+      const targetKey = this.getAttribute('data-target');
+      const data = serviceData[targetKey];
+
+      if (!data) return; 
+
+      cardImage.classList.add('fade-out');
+      cardTitle.classList.add('fade-out');
+      cardExcerpt.classList.add('fade-out');
+
+      setTimeout(function() {
+        cardImage.src = data.image;
+        cardTitle.innerText = data.title;
+        cardExcerpt.innerText = data.excerpt;
+        cardLink.href = data.link;
+
+        cardImage.classList.remove('fade-out');
+        cardTitle.classList.remove('fade-out');
+        cardExcerpt.classList.remove('fade-out');
+      }, 200); 
+    });
+  });
+
+  // 3. NEW: Drag to Scroll Logic
+  const slider = document.getElementById('scrollable-list');
+  let isDown = false;
+  let startY;
+  let scrollTop;
+
+  slider.addEventListener('mousedown', function(e) {
+    isDown = true;
+    slider.classList.add('active-drag');
+    startY = e.pageY - slider.offsetTop;
+    scrollTop = slider.scrollTop;
+  });
+
+  slider.addEventListener('mouseleave', function() {
+    isDown = false;
+    slider.classList.remove('active-drag');
+  });
+
+  slider.addEventListener('mouseup', function() {
+    isDown = false;
+    slider.classList.remove('active-drag');
+  });
+
+  slider.addEventListener('mousemove', function(e) {
+    if (!isDown) return;
+    e.preventDefault(); // Prevents text highlighting while dragging
+    const y = e.pageY - slider.offsetTop;
+    const walk = (y - startY) * 1.5; // Multiply to scroll faster. Increase for faster scrolling.
+    slider.scrollTop = scrollTop - walk;
+  });
+
+});
+
+</script>
